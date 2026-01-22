@@ -83,5 +83,16 @@ public function currentStatus(): string
     return '出勤中';
 }
 
+/**
+ * 現在進行中の休憩（未終了）
+ */
+public function activeBreak()
+{
+    return $this->hasOne(AttendanceBreak::class)
+        ->whereNull('break_end_at')
+        ->latestOfMany();
+}
+
+
 
 }

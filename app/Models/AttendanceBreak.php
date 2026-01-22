@@ -9,6 +9,12 @@ class AttendanceBreak extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'attendance_id',
+        'break_start_at',
+        'break_end_at',
+    ];
+
     /**
      * 休憩は1つの勤怠に属する
      */
@@ -16,4 +22,6 @@ class AttendanceBreak extends Model
     {
         return $this->belongsTo(Attendance::class);
     }
+
+    
 }
