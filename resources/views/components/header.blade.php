@@ -1,13 +1,9 @@
-<header>
-    <nav>
-        <a href="{{ route('attendance.index') ?? '/attendance' }}">勤怠</a>
-        <a href="/attendance/list">勤怠一覧</a>
-        <a href="/stamp_correction_request/list">申請</a>
+<header class="header">
+    <div class="logo">COACHTECH</div>
 
-        <form method="POST" action="/logout" style="display:inline;">
-            @csrf
-            <button type="submit">ログアウト</button>
-        </form>
+    <nav class="nav">
+        <a href="{{ route('attendance.index') }}">勤怠</a>
+        <a href="{{ route('attendance.index') }}">勤怠一覧</a>
+        <a href="#">申請</a>
     </nav>
-    <hr>
 </header>

@@ -5,21 +5,7 @@ body {
     color: #000;
 }
 
-.main {
-    padding-top: 80px;
-    /* ヘッダー下の余白 */
-    display: flex;
-    justify-content: center;
-}
-
-.card {
-    background: #f5f5f5;
-    width: 420px;
-    padding: 50px 30px;
-    text-align: center;
-    border-radius: 4px;
-}
-
+/* ===== Header（COACHTECH風） ===== */
 .header {
     background: #000;
     color: #fff;
@@ -39,22 +25,38 @@ body {
     margin-left: 20px;
     text-decoration: none;
     font-size: 14px;
+    opacity: 0.95;
 }
 
-.container {
+.nav a:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* ===== Main ===== */
+.main {
+    padding: 40px 16px;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: calc(100vh - 60px);
 }
 
+.card {
+    background: #f5f5f5;
+    width: 420px;
+    max-width: 100%;
+    padding: 40px 30px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+/* ===== Status & Time ===== */
 .status-label {
     background: #ddd;
     display: inline-block;
     padding: 4px 12px;
     border-radius: 12px;
     font-size: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .date {
@@ -65,9 +67,10 @@ body {
 .time {
     font-size: 48px;
     font-weight: bold;
-    margin-bottom: 40px;
+    margin-bottom: 34px;
 }
 
+/* ===== Buttons（このUIのキモ） ===== */
 .buttons {
     display: flex;
     justify-content: center;
@@ -75,7 +78,8 @@ body {
 }
 
 .btn {
-    width: 120px;
+    width: 140px;
+    /* 120だと少し小さいので寄せる */
     padding: 12px 0;
     border: none;
     border-radius: 6px;
@@ -94,7 +98,40 @@ body {
     border: 1px solid #000;
 }
 
+/* 退勤済メッセージ */
 .done-message {
     font-size: 14px;
-    margin-top: 20px;
+    margin-top: 22px;
+    color: #111;
+}
+
+/* スマホ最適化 */
+@media (max-width: 480px) {
+    .header {
+        padding: 14px 16px;
+    }
+
+    .nav a {
+        margin-left: 12px;
+        font-size: 13px;
+    }
+
+    .card {
+        padding: 32px 18px;
+    }
+
+    .time {
+        font-size: 42px;
+    }
+
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .btn {
+        width: 100%;
+        max-width: 260px;
+    }
 }
