@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\AttendanceBreak;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
@@ -14,9 +15,7 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        // 仮ユーザー（開発用）
-        $user = \App\Models\User::first();
-
+        $user = Auth::user();
         $today = Carbon::today();
 
         $attendance = Attendance::where('user_id', $user->id)
@@ -38,7 +37,7 @@ class AttendanceController extends Controller
      */
     public function clockIn()
     {
-        $user = \App\Models\User::first();
+        $user = Auth::user();
         $today = Carbon::today();
 
         $attendance = Attendance::where('user_id', $user->id)
@@ -64,7 +63,7 @@ class AttendanceController extends Controller
      */
     public function breakStart()
     {
-        $user = \App\Models\User::first();
+        $user = Auth::user();
         $today = Carbon::today();
 
         $attendance = Attendance::where('user_id', $user->id)
@@ -89,7 +88,7 @@ class AttendanceController extends Controller
      */
     public function breakEnd()
     {
-        $user = \App\Models\User::first();
+        $user = Auth::user();
         $today = Carbon::today();
 
         $attendance = Attendance::where('user_id', $user->id)
@@ -115,36 +114,36 @@ class AttendanceController extends Controller
     }
 
     /**
- * 退勤処理
- */
-public function clockOut()
-{
-    $user = \App\Models\User::first();
-    $today = \Carbon\Carbon::today();
+     * 退勤処理
+     */
+    public function clockOut()
+    {
+        $user = Auth::user();
+        $today = Carbon::today();
 
-    $attendance = Attendance::where('user_id', $user->id)
-        ->whereDate('date', $today)
-        ->first();
+        $attendance = Attendance::where('user_id', $user->id)
+            ->whereDate('date', $today)
+            ->first();
 
-    // 出勤していない / すでに退勤済 → 何もしない
-    if (! $attendance || $attendance->isClockedOut()) {
+        // 出勤していない / すでに退勤済 → 何もしない
+        if (! $attendance || $attendance->isClockedOut()) {
+            return redirect('/attendance');
+        }
+
+        // 未終了の休憩があれば自動で終了
+        $activeBreak = $attendance->activeBreak()->first();
+        if ($activeBreak) {
+            $activeBreak->update([
+                'break_end_at' => now(),
+            ]);
+        }
+
+        // 退勤
+        $attendance->update([
+            'clock_out_at' => now(),
+        ]);
+
         return redirect('/attendance');
     }
-
-    // 未終了の休憩があれば自動で終了
-    $activeBreak = $attendance->activeBreak()->first();
-    if ($activeBreak) {
-        $activeBreak->update([
-            'break_end_at' => now(),
-        ]);
-    }
-
-    // 退勤
-    $attendance->update([
-        'clock_out_at' => now(),
-    ]);
-
-    return redirect('/attendance');
 }
 
-}
