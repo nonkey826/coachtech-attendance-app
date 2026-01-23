@@ -33,6 +33,20 @@ body {
     text-decoration: underline;
 }
 
+.nav-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    margin-left: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.nav-btn:hover {
+    text-decoration: underline;
+}
+
 /* ===== Main ===== */
 .main {
     padding: 40px 16px;
