@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 
 class Attendance extends Model
 {
@@ -93,6 +94,50 @@ public function activeBreak()
         ->latestOfMany();
 }
 
+protected function casts(): array
+{
+    return [
+        'date' => 'date',
+        'clock_in_at' => 'datetime',
+        'clock_out_at' => 'datetime',
+    ];
+    
+}
+
+public function breakMinutes(): int
+{
+    return $this->breaks->sum(function ($break) {
+        if (! $break->break_start_at || ! $break->break_end_at) {
+            return 0;
+        }
+
+        return Carbon::parse($break->break_start_at)
+            ->diffInMinutes(Carbon::parse($break->break_end_at));
+    });
+}
+
+public function breakMinutesText(): string
+{
+    $min = $this->breakMinutes();
+    return $min ? "{$min}分" : "-";
+}
+
+public function workMinutes(): int
+{
+    if (! $this->clock_in_at || ! $this->clock_out_at) {
+        return 0;
+    }
+
+    $total = $this->clock_in_at->diffInMinutes($this->clock_out_at);
+
+    return max(0, $total - $this->breakMinutes());
+}
+
+public function workMinutesText(): string
+{
+    $min = $this->workMinutes();
+    return $min ? "{$min}分" : "-";
+}
 
 
 }

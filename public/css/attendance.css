@@ -33,6 +33,11 @@ body {
     text-decoration: underline;
 }
 
+
+.nav-btn:hover {
+    text-decoration: underline;
+}
+
 .nav-btn {
     background: transparent;
     border: none;
@@ -41,10 +46,7 @@ body {
     font-size: 14px;
     cursor: pointer;
     padding: 0;
-}
-
-.nav-btn:hover {
-    text-decoration: underline;
+    font-family: inherit;
 }
 
 /* ===== Main ===== */
