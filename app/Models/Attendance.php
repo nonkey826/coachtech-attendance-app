@@ -4,17 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 use Carbon\Carbon;
+use App\Models\AttendanceCorrectionRequest;
 
 class Attendance extends Model
 {
     use HasFactory;
-protected $fillable = [
+    protected $fillable = [
         'user_id',
         'date',
         'clock_in_at',
         'clock_out_at',
+        'note',
     ];
+
     /**
      * 勤怠は1人のユーザーに属する
      */
@@ -31,14 +36,7 @@ protected $fillable = [
         return $this->hasMany(AttendanceBreak::class);
     }
 
-    /**
-     * 勤怠は複数の修正申請を持つ
-     */
-    public function correctionRequests()
-    {
-        return $this->hasMany(AttendanceCorrectionRequest::class);
-    }
-
+    
     /**
      * 退勤済かどうか
      */
@@ -138,6 +136,25 @@ public function workMinutesText(): string
     $min = $this->workMinutes();
     return $min ? "{$min}分" : "-";
 }
+    // 合計時間の表示用メソッド
+    public static function minutesToHourText(int $minutes): string
+    {
+        $h = intdiv($minutes, 60);
+        $m = $minutes % 60;
 
+        if ($minutes === 0) {
+            return '0分';
+        }
 
+        if ($m === 0) {
+            return "{$h}時間";
+        }
+
+        return "{$h}時間{$m}分";
+    }
+
+    public function correctionRequests(): HasMany
+    {
+        return $this->hasMany(AttendanceCorrectionRequest::class);
+    }
 }

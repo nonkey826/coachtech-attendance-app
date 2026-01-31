@@ -28,9 +28,12 @@
             @endisset
 
             <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+            <main class="mx-4 md:mx-[20%] py-6">
+    {{ $slot }}
+</main>
         </div>
     </body>
+    
+
+
 </html>
