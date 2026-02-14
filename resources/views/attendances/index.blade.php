@@ -45,8 +45,18 @@
                         @forelse ($attendances as $attendance)
                             <tr class="border-t">
                                 <td class="p-3">
-                                    {{ $attendance->date->format('n月j日') }}
-                                </td>
+    <div class="flex items-center gap-2">
+        <span>{{ $attendance->date->format('n月j日') }}</span>
+
+        @if ($attendance->correctionRequests()->where('status', 'pending')->exists())
+            <span class="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded font-bold">
+    申請中
+</span>
+
+        @endif
+    </div>
+</td>
+
 
                                 <td class="p-3">
                                     {{ $attendance->clock_in_at ? $attendance->clock_in_at->format('H時i分') : '-' }}
